@@ -24,147 +24,29 @@ const UserPage: Component = () => {
     image: profileImage,
   };
 
-  const recipes: SmalRecipe[] = [
-    {
-      id: "1",
-      title: "Tomatsuppe",
-      time: "20 minutter",
-      numberOfSteps: 3,
-      numberOfIngredients: 3,
-      creatorUserId: "justMarlen",
-      type: "Suppe",
-      image: tomatoImage,
-      color: "#F4D0E9",
-    },
-    {
-      id: "2",
-      title: "Vegetar pizza",
-      time: "40 minutter",
-      numberOfSteps: 6,
-      numberOfIngredients: 10,
-      creatorUserId: "justMarlen",
-      type: "Italiensk",
-      image: pizzaImage,
-      color: "#F4EDD0",
-    },
-    {
-      id: "1",
-      title: "Tomatsuppe",
-      time: "20 minutter",
-      numberOfSteps: 3,
-      numberOfIngredients: 3,
-      creatorUserId: "justMarlen",
-      type: "Suppe",
-      image: tomatoImage,
-      color: "#D0D7F4",
-    },
-    {
-      id: "2",
-      title: "Vegetar pizza",
-      time: "40 minutter",
-      numberOfSteps: 6,
-      numberOfIngredients: 10,
-      creatorUserId: "justMarlen",
-      type: "Italiensk",
-      image: pizzaImage,
-      color: "#D0F4DB",
-    },
-    {
-      id: "1",
-      title: "Tomatsuppe",
-      time: "20 minutter",
-      numberOfSteps: 3,
-      numberOfIngredients: 3,
-      creatorUserId: "justMarlen",
-      type: "Suppe",
-      image: tomatoImage,
-      color: "#F4D0E9",
-    },
-    {
-      id: "2",
-      title: "Vegetar pizza",
-      time: "40 minutter",
-      numberOfSteps: 6,
-      numberOfIngredients: 10,
-      creatorUserId: "justMarlen",
-      type: "Italiensk",
-      image: pizzaImage,
-      color: "#F4EDD0",
-    },
-    {
-      id: "1",
-      title: "Tomatsuppe",
-      time: "20 minutter",
-      numberOfSteps: 3,
-      numberOfIngredients: 3,
-      creatorUserId: "justMarlen",
-      type: "Suppe",
-      image: tomatoImage,
-      color: "#F4D0E9",
-    },
-    {
-      id: "2",
-      title: "Vegetar pizza",
-      time: "40 minutter",
-      numberOfSteps: 6,
-      numberOfIngredients: 10,
-      creatorUserId: "justMarlen",
-      type: "Italiensk",
-      image: pizzaImage,
-      color: "#F4EDD0",
-    },
-    {
-      id: "3",
-      title: "Tomatsuppe",
-      time: "20 minutter",
-      numberOfSteps: 3,
-      numberOfIngredients: 3,
-      creatorUserId: "justMarlen",
-      type: "Suppe",
-      image: tomatoImage,
-      color: "#F4D0E9",
-    },
-    {
-      id: "4",
-      title: "Vegetar pizza",
-      time: "40 minutter",
-      numberOfSteps: 6,
-      numberOfIngredients: 10,
-      creatorUserId: "justMarlen",
-      type: "Italiensk",
-      image: pizzaImage,
-      color: "#F4EDD0",
-    },
-    {
-      id: "5",
-      title: "Tomatsuppe",
-      time: "20 minutter",
-      numberOfSteps: 3,
-      numberOfIngredients: 3,
-      creatorUserId: "justMarlen",
-      type: "Suppe",
-      image: tomatoImage,
-      color: "#F4D0E9",
-    },
-    {
-      id: "6",
-      title: "Vegetar pizza",
-      time: "40 minutter",
-      numberOfSteps: 6,
-      numberOfIngredients: 10,
-      creatorUserId: "justMarlen",
-      type: "Italiensk",
-      image: pizzaImage,
-      color: "#F4EDD0",
-    },
-  ];
-
   const [currentOption, setCurrentOption] = createSignal<UserPageOptions>(
     UserPageOptions.recipes
   );
 
+  const [recipes, setResipes] = createSignal<SmalRecipe[]>();
+
   createEffect(() => {
     console.log("changed", currentOption());
+  });
+
+  createEffect(() => {
+    const fetchRecipes = async () => {
+      const response = await fetch("http://localhost:9090/recipes", {
+        method: "GET",
+      });
+
+      if (!response.ok) return;
+
+      const data = await response.json();
+      setResipes(data);
+    };
+
+    fetchRecipes();
   });
 
   return (
@@ -190,7 +72,7 @@ const UserPage: Component = () => {
         />
       </div>
       <div class={styles.recipeCardsContainer}>
-        <For each={recipes}>{(recipe) => <RecipeCard {...recipe} />}</For>
+        <For each={recipes()}>{(recipe) => <RecipeCard {...recipe} />}</For>
       </div>
     </div>
   );
