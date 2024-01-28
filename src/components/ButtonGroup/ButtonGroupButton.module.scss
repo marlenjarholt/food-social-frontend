@@ -1,0 +1,16 @@
+
+.buttonStyle {
+    background-color: #D0F4DB;
+    color: black;
+    box-shadow: none;
+    border-radius: 0;
+
+    &:hover {
+        background-color: #B3EDC5;
+        box-shadow: none;
+    }
+}
+
+.selectedButton {
+    background-color: #B3EDC5;
+}
